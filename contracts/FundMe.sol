@@ -4,7 +4,7 @@ pragma solidity ^0.8.19;
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./PriceConverter.sol";
 
-error NotOwner();
+error FundMe__NotOwner();
 
 contract FundMe {
     using PriceConverter for uint256;
@@ -29,15 +29,9 @@ contract FundMe {
         funders.push(msg.sender);
     }
     
-    function getVersion() public view returns (uint256){
-        // ETH/USD price feed address of Sepolia Network.
-        // AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
-        return priceFeed.version();
-    }
-    
     modifier onlyOwner {
         // require(msg.sender == owner);
-        if (msg.sender != i_owner) revert NotOwner();
+        if (msg.sender != i_owner) revert FundMe__NotOwner();
         _;
     }
     
@@ -68,13 +62,13 @@ contract FundMe {
     //  /        \
     //receive()  fallback()
 
-    fallback() external payable {
-        fund();
-    }
+    // fallback() external payable {
+    //     fund();
+    // }
 
-    receive() external payable {
-        fund();
-    }
+    // receive() external payable {
+    //     fund();
+    // }
 
 }
 

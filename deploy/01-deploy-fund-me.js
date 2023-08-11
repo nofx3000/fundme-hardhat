@@ -3,6 +3,7 @@ const {
   networkConfig,
   developmentChains,
 } = require("../helper-hardhat-config");
+const { verify } = require("../utils/verify");
 
 module.exports = async (hre) => {
   const { getNamedAccounts, deployments } = hre;
@@ -22,9 +23,17 @@ module.exports = async (hre) => {
     from: deployer,
     args: [ethUsdPriceFeedAddress], // the argument of contructor of FundMe.sol
     log: true,
+    waitConfirmations: network.config.blockConfirmations || 1,
   });
 
   log("-----------------------");
+
+  // if (
+  //   !developmentChains.includes(network.name) &&
+  //   process.env.ETHERSCAN_API_KEY
+  // ) {
+  //   await verify(fundMe.address, [ethUsdPriceFeedAddress]);
+  // }
 };
 
 module.exports.tags = ["all", "fundme"];
